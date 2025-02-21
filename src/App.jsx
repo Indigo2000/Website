@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 const welcome = {
-  greeting: 'Hacker News Headlines',
+  heading: 'Hacker News Search Tool',
 };
 
-const API_ENDPOINT = 'http://hn.algolia.com/api/v1/search?tags=front_page';
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 const storiesReducer = (state, action) => {
   switch (action.type) {
@@ -59,7 +59,7 @@ const useStorageState = (key, initialState) => {
 
 const App = () => {
   
-  const [searchTerm, setSearchTerm] = useStorageState('search', '');
+  const [searchTerm, setSearchTerm] = useStorageState('search', 'React');
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer ,
      { data: [], isLoading: false, isError: false }
@@ -68,9 +68,11 @@ const App = () => {
  
 
   React.useEffect(() => {
+    if (!searchTerm) return;
+
     dispatchStories({ type: 'STORIES_FETCH_INIT'});
 
-    fetch(`${API_ENDPOINT}`)
+    fetch(`${API_ENDPOINT}${searchTerm}`)
       .then((response) => response.json())
       .then(result => {
         dispatchStories({
@@ -81,13 +83,13 @@ const App = () => {
     .catch(() => 
       dispatchStories({ type: 'STORIES_FETCH_FAILURE' })  
     );
-  }, []);
+  }, [searchTerm]);
 
   const handleRemoveStory = (item) => {
     dispatchStories({
       type: 'REMOVE_STORY',
       payload: item,
-    });
+    },);
   };
 
   const handleSearch = (event) => {
@@ -102,7 +104,7 @@ const App = () => {
   return (
     <div>
       <h1>
-        {welcome.greeting}</h1>
+        {welcome.heading}</h1>
 
         <InputWithLabel
         id="search"
@@ -120,7 +122,7 @@ const App = () => {
         <p>Loading...</p>
       ) : (
 
-      <List list={searchedStories} onRemoveItem={handleRemoveStory}/>
+      <List list={stories.data} onRemoveItem={handleRemoveStory}/>
       )}
     </div>
   );
@@ -150,8 +152,8 @@ const Item = ({item, onRemoveItem}) => {
       <a href={item.url}> {item.title}</a>
     </span>
     <span> {item.author} </span>
-    <span> {item.num_comments} </span>
-    <span> {item.points} </span>
+    <span>{item.num_comments} </span>
+    <span>{item.points} </span>
     <span>
       <button type="button" onClick={() => onRemoveItem(item)}>
         Dismiss

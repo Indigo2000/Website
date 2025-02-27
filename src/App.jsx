@@ -107,14 +107,20 @@ const List = ({ sections }) => (
   </div>
   );
 
-const Item = ({item}) => (
+const Item = ({item, onRemoveItem}) => {
+  const handleRemoveItem = () => {
+    onRemoveItem(item);
+  };
+  
+  return (
   <li>
     <span>
       <a href={item.url} target="_blank" rel="noopener noreferrer">
          {item.title}</a>
     </span>
   </li>
-)
+);
+};
 
 const InputWithLabel =({id, label, value, type = 'text', onInputChange, isFocused, children}) => {
 

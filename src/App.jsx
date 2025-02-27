@@ -113,20 +113,12 @@ const Item = ({item, onRemoveItem}) => {
   };
   
   return (
-const Item = ({item, onRemoveItem}) => {
-  const handleRemoveItem = () => {
-    onRemoveItem(item);
-  };
-  
-  return (
   <li>
     <span>
       <a href={item.url} target="_blank" rel="noopener noreferrer">
          {item.title}</a>
     </span>
   </li>
-);
-};
 );
 };
 

@@ -41,7 +41,7 @@ const App = () => {
   return (
     <div
     style={{
-      backgroundImage: "url('/files/background.JPG')",
+      backgroundImage: "url('/files/background3.JPG')",
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundAttachment: "fixed", // Ensures background stays put when scrolling

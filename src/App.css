@@ -1,0 +1,104 @@
+/* Global Styles */
+body {
+    background-image: url('/files/background3.JPG'); /* Ensure the file path is correct */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+    color: #333333;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh; /* Ensure background covers the full page */
+  }
+  
+  /* Restore Banner */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+    border-radius: 8px;
+    color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for better visibility */
+  }
+  
+  /* Titles */
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff; /* Light text inside the header */
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #0056b3; /* Dark blue for section headings */
+    margin-top: 20px;
+  }
+  
+  /* Social Media Icons */
+  .social-links {
+    font-size: 24px;
+  }
+  
+  .social-links a {
+    color: #61dafb; /* React blue */
+    margin-right: 10px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .social-links a:hover {
+    color: #ffcc00; /* Yellow hover */
+  }
+  
+  /* Search Input */
+  input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #666666;
+    outline: none;
+    width: 100%;
+    max-width: 300px;
+    background: #f9f9f9;
+    color: #333333;
+  }
+  
+  /* List and Items */
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  /* Make links look more clickable */
+  a {
+    color: #007BFF; /* Standard blue link color */
+    text-decoration: underline; /* Underline by default */
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  a:hover {
+    color: #ff5722; /* Change color on hover */
+    font-weight: bold;
+    text-decoration: none; /* Remove underline on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    header {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .social-links {
+      margin-top: 10px;
+    }
+  }
+  

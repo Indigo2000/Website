@@ -1,7 +1,8 @@
 import * as React from 'react';
+import './App.css'; // Import the CSS file
 import stories from './stories';
-import { FaGithub, FaLinkedin, FaFilePdf } from 'react-icons/fa'; // Import icons
-import { SiCodesignal } from 'react-icons/si'; // Import CodeSignal icon
+import { FaGithub, FaLinkedin, FaFilePdf } from 'react-icons/fa';
+import { SiCodesignal } from 'react-icons/si';
 
 const welcome = {
   greeting: 'Will Irvine - Software Developer',
@@ -9,58 +10,43 @@ const welcome = {
 };
 
 const useStorageState = (key, initialState) => {
-  const [value, setValue] = React.useState(
-    localStorage.getItem(key) || initialState
-      );
+  const [value, setValue] = React.useState(localStorage.getItem(key) || initialState);
 
   React.useEffect(() => {
     localStorage.setItem(key, value);
   }, [value, key]);
-  return [value, setValue]
+
+  return [value, setValue];
 };
 
-
 const App = () => {
-  
   const [searchTerm, setSearchTerm] = useStorageState('search', '');
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-
   };
-  
-  // const sections = stories || [];
-  const filteredStories = stories.map((section) => ({
-    ...section,
-  items: section.items ? section.items.filter((story) =>
-    story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  : [],
-})).filter(section => section.items.length > 0); // Remove empty sections
+
+  const filteredStories = stories
+    .map((section) => ({
+      ...section,
+      items: section.items ? section.items.filter((story) =>
+        story.title.toLowerCase().includes(searchTerm.toLowerCase())
+      ) : [],
+    }))
+    .filter(section => section.items.length > 0);
 
   return (
-    <div
-    style={{
-      backgroundImage: "url('/files/background3.JPG')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundAttachment: "fixed", // Ensures background stays put when scrolling
-      minHeight: "100vh", // Ensures full-page background but allows scrolling
-      padding: "20px", // Adds some space inside the page
-    }}
-  >
-       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px' }}>
-      <h1>
-        {welcome.greeting}</h1>
-              {/* Social Links with Icons */}
-              <div style={{ fontSize: '24px' }}>
-          <a href="/files/MyCV.pdf" download title="Download CV" style={{ marginRight: '10px' }}>
+    <div>
+      <header>
+        <h1>{welcome.greeting}</h1>
+        <div className="social-links">
+          <a href="/files/MyCV.pdf" download title="Download CV">
             <FaFilePdf />
           </a>
-          <a href="https://github.com/Indigo2000" target="_blank" rel="noopener noreferrer" title="GitHub" style={{ marginRight: '10px' }}>
+          <a href="https://github.com/Indigo2000" target="_blank" rel="noopener noreferrer" title="GitHub">
             <FaGithub />
           </a>
-          <a href="https://www.linkedin.com/in/will-irvine-12675a236" target="_blank" rel="noopener noreferrer" title="LinkedIn" style={{ marginRight: '10px' }}>
+          <a href="https://www.linkedin.com/in/will-irvine-12675a236" target="_blank" rel="noopener noreferrer" title="LinkedIn">
             <FaLinkedin />
           </a>
           <a href="https://codesignal.com/learn/profile/cm5uvkicx001942mb7p3z8knt" target="_blank" rel="noopener noreferrer" title="CodeSignal">
@@ -68,20 +54,11 @@ const App = () => {
           </a>
         </div>
       </header>
-        <hr />
-        <h1>
-        {welcome.title}</h1>
-        <InputWithLabel
-        id="search"
-        label=""
-        value={searchTerm}
-        isFocused
-        onInputChange={handleSearch} 
-        >
-          <strong>Search:</strong>
+      <hr />
+      <h2>{welcome.title}</h2>
+      <InputWithLabel id="search" value={searchTerm} isFocused onInputChange={handleSearch}>
+        <strong>Search:</strong>
       </InputWithLabel>
-      
-
       {Array.isArray(filteredStories) && <List sections={filteredStories} />}
     </div>
   );
@@ -91,59 +68,45 @@ const List = ({ sections }) => (
   <div>
     {sections.map((section, index) => (
       <div key={index}>
-        <h2>{section.heading}</h2> {/* Render section heading */}
+        <h2>{section.heading}</h2>
         {section.items && section.items.length > 0 ? (
-    <ul>
-      {section.items.map((item) => (
-          <Item key={item.objectID} item={item} />
-      )
-    )}
-  </ul>
+          <ul>
+            {section.items.map((item) => (
+              <Item key={item.objectID} item={item} />
+            ))}
+          </ul>
         ) : (
           <p>No Matching Stories</p>
         )}
+      </div>
+    ))}
   </div>
-      ))}
-  </div>
-  );
+);
 
-const Item = ({item, onRemoveItem}) => {
-  const handleRemoveItem = () => {
-    onRemoveItem(item);
-  };
-  
-  return (
+const Item = ({ item }) => (
   <li>
     <span>
-      <a href={item.url} target="_blank" rel="noopener noreferrer">
-         {item.title}</a>
+      <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a>
     </span>
   </li>
 );
-};
 
-const InputWithLabel =({id, label, value, type = 'text', onInputChange, isFocused, children}) => {
-
+const InputWithLabel = ({ id, label, value, type = 'text', onInputChange, isFocused, children }) => {
   const inputRef = React.useRef();
 
   React.useEffect(() => {
     if (isFocused && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isFocused]);  
-  
+  }, [isFocused]);
+
   return (
     <>
-      <label htmlFor={id}>{children}{label} </label>
+      <label htmlFor={id}>{children}{label}</label>
       &nbsp;
-      <input
-        ref={inputRef} 
-        id={id}
-        type={type}
-        value={value}
-        onChange={onInputChange}
-        />
+      <input ref={inputRef} id={id} type={type} value={value} onChange={onInputChange} />
     </>
   );
-}
-export default App
+};
+
+export default App;

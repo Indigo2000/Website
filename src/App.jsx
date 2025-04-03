@@ -30,9 +30,9 @@ const App = () => {
   const filteredModules = modules
     .map((section) => ({
       ...section,
-      items: section.items ? section.items.filter((story) =>
-        story.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (story.tags && story.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
+      items: section.items ? section.items.filter((module) =>
+        module.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (module.tags && module.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
       ) : [],
     }))
     .filter(section => section.items.length > 0);

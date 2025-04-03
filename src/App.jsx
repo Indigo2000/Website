@@ -1,8 +1,9 @@
 import * as React from 'react';
-import './App.css'; // Import the CSS file
-import stories from './stories';
 import { FaGithub, FaLinkedin, FaFilePdf } from 'react-icons/fa';
 import { SiCodesignal } from 'react-icons/si';
+import { FiSearch } from 'react-icons/fi';
+import modules from './modules';
+import './App.css'; // Ensure the CSS file is properly imported
 
 const welcome = {
   greeting: 'Will Irvine - Software Developer',
@@ -26,18 +27,19 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredStories = stories
+  const filteredModules = modules
     .map((section) => ({
       ...section,
       items: section.items ? section.items.filter((story) =>
-        story.title.toLowerCase().includes(searchTerm.toLowerCase())
+        story.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (story.tags && story.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
       ) : [],
     }))
     .filter(section => section.items.length > 0);
 
   return (
-    <div>
-      <header>
+    <div className="container">
+      <header className="header">
         <h1>{welcome.greeting}</h1>
         <div className="social-links">
           <a href="/files/MyCV.pdf" download title="Download CV">
@@ -54,44 +56,39 @@ const App = () => {
           </a>
         </div>
       </header>
-      <hr />
-      <h2>{welcome.title}</h2>
-      <InputWithLabel id="search" value={searchTerm} isFocused onInputChange={handleSearch}>
-        <strong>Search:</strong>
-      </InputWithLabel>
-      {Array.isArray(filteredStories) && <List sections={filteredStories} />}
+      <main>
+        <h2>{welcome.title}</h2>
+        <InputWithLabel id="search" value={searchTerm} isFocused onInputChange={handleSearch} />
+        {filteredModules.length > 0 ? <List sections={filteredModules} /> : <p>No matching items found.</p>}
+      </main>
     </div>
   );
 };
 
 const List = ({ sections }) => (
-  <div>
+  <div className="list-container">
     {sections.map((section, index) => (
-      <div key={index}>
+      <div key={index} className="section">
         <h2>{section.heading}</h2>
-        {section.items && section.items.length > 0 ? (
-          <ul>
-            {section.items.map((item) => (
-              <Item key={item.objectID} item={item} />
-            ))}
-          </ul>
-        ) : (
-          <p>No Matching Stories</p>
-        )}
+        <ul>
+          {section.items.map((item) => (
+            <Item key={item.objectID} item={item} />
+          ))}
+        </ul>
       </div>
     ))}
   </div>
 );
 
 const Item = ({ item }) => (
-  <li>
-    <span>
-      <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a>
-    </span>
+  <li className="list-item">
+    <a href={item.url} target="_blank" rel="noopener noreferrer">
+      {item.title}
+    </a>
   </li>
 );
 
-const InputWithLabel = ({ id, label, value, type = 'text', onInputChange, isFocused, children }) => {
+const InputWithLabel = ({ id, label, value, type = 'text', onInputChange, isFocused }) => {
   const inputRef = React.useRef();
 
   React.useEffect(() => {
@@ -101,11 +98,19 @@ const InputWithLabel = ({ id, label, value, type = 'text', onInputChange, isFocu
   }, [isFocused]);
 
   return (
-    <>
-      <label htmlFor={id}>{children}{label}</label>
-      &nbsp;
-      <input ref={inputRef} id={id} type={type} value={value} onChange={onInputChange} />
-    </>
+    <div className="search-container">
+      <label htmlFor={id}>{label || 'Search'}</label>
+      <div className="search-input-wrapper">
+        <input 
+          ref={inputRef} 
+          id={id} 
+          type={type} 
+          value={value} 
+          onChange={onInputChange} 
+        />
+        <FiSearch className="search-icon" />
+      </div>
+    </div>
   );
 };
 
